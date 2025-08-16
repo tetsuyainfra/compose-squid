@@ -21,7 +21,9 @@ if [ ! -f /etc/ssl/private/ssl-cert-snakeoil.key ]; then
     /usr/sbin/make-ssl-cert generate-default-snakeoil --force-overwrite > /dev/null 2>&1
 fi
 
+# Change cache,log directory ownership and permissions
 chown proxy:proxy /var/cache/squid
+chown proxy:proxy /var/log/squid
 
 tail -F /var/log/squid/access.log 2>/dev/null &
 tail -F /var/log/squid/error.log 2>/dev/null &
