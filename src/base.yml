@@ -1,0 +1,47 @@
+
+
+services:
+  squid:
+    image: ubuntu/squid:6.6-24.04_beta
+    # restart: unless-stopped
+    restart: no
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - ./squid/entrypoint.sh:/usr/local/bin/entrypoint.sh:ro
+      - ./squid:/etc/squid:ro
+      - squid_spool:/var/spool/squid
+      - squid_cache:/var/cache/squid
+
+
+  # docker-registry:
+  #   image: registry:2
+  #   restart: unless-stopped
+  #   volumes: []
+  #   # networks:
+  #   #   infra1_net:
+  #   #     ipv4_address: 10.10.20.3
+
+
+volumes:
+  squid_spool:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     device: /srv/squid
+  #     o: bind
+  squid_cache:
+    # driver: local
+    # driver_opts:
+    #   type: none
+    #   device: /srv/squid/cache
+    #   o: bind
+
+  # docker_registry_data:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     device: /srv/docker-registry
+  #     o: bind
+
+
