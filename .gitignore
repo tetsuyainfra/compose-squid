@@ -1,3 +1,5 @@
+.env
+
 /log/squid/*
 !/log/squid/.keep_dir
 
