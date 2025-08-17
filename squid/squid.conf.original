@@ -1,4 +1,4 @@
-#	WELCOME TO SQUID 6.10
+#	WELCOME TO SQUID 6.13
 #	----------------------------
 #
 #	This is the documentation for the Squid configuration file.
@@ -41,9 +41,10 @@
 #
 #	Units accepted by Squid are:
 #		bytes - byte
-#		KB - Kilobyte (1024 bytes)
-#		MB - Megabyte
-#		GB - Gigabyte
+#		KB - Kilobyte (2^10, 1'024 bytes)
+#		MB - Megabyte (2^20, 1'048'576 bytes)
+#		GB - Gigabyte (2^30, 1'073'741'824 bytes)
+#	Squid does not yet support KiB, MiB, and GiB unit names.
 #
 #  Values with time units
 #
@@ -399,6 +400,9 @@
 #
 #	In SMP mode, each worker does nearly all what a single Squid daemon
 #	does (e.g., listen on http_port and forward HTTP requests).
+#
+#	Changing the number of workers requires a restart: Squid warns about but
+#	otherwise ignores attempts to change this setting via reconfiguration.
 #Default:
 # SMP support disabled.
 
@@ -2190,6 +2194,9 @@ http_port 3128
 #	The tls-cert= option is mandatory on HTTPS ports.
 #
 #	See http_port for a list of modes and options.
+#	Not all http_port options are available for https_port.
+#	Among the unavalable options:
+#	- require-proxy-header
 #Default:
 # none
 
@@ -2251,6 +2258,9 @@ http_port 3128
 #
 #	Other http_port modes and options that are not specific to HTTP and
 #	HTTPS may also work.
+#	Among the options that are not available for ftp_port:
+#	- require-proxy-header
+#	- ssl-bump
 #Default:
 # none
 
@@ -3385,19 +3395,6 @@ http_port 3128
 #	sslcert=/path/to/ssl/certificate
 #			A client X.509 certificate to use when connecting to
 #			this peer.
-#
-#	Notes:
-#
-#	On Debian/Ubuntu systems a default snakeoil certificate is
-#	available in /etc/ssl and users can set:
-#
-#		sslcert=/etc/ssl/certs/ssl-cert-snakeoil.pem
-#
-#	and
-#
-#		sslkey=/etc/ssl/private/ssl-cert-snakeoil.key
-#
-#	for testing.
 #
 #	sslkey=/path/to/ssl/key
 #			The private key corresponding to sslcert above.
@@ -5888,12 +5885,6 @@ coredump_dir /var/spool/squid
 #
 refresh_pattern ^ftp:		1440	20%	10080
 refresh_pattern -i (/cgi-bin/|\?) 0	0%	0
-refresh_pattern \/(Packages|Sources)(|\.bz2|\.gz|\.xz)$ 0 0% 0 refresh-ims
-refresh_pattern \/Release(|\.gpg)$ 0 0% 0 refresh-ims
-refresh_pattern \/InRelease$ 0 0% 0 refresh-ims
-refresh_pattern \/(Translation-.*)(|\.bz2|\.gz|\.xz)$ 0 0% 0 refresh-ims
-# example pattern for deb packages
-#refresh_pattern (\.deb|\.udeb)$   129600 100% 129600
 refresh_pattern .		0	20%	4320
 
 #  TAG: quick_abort_min	(KB)
@@ -6725,6 +6716,9 @@ refresh_pattern .		0	20%	4320
 # http_accel_surrogate_remote off
 
 #  TAG: esi_parser	libxml2|expat
+# Note: This option is only available if Squid is rebuilt with the
+#       --enable-esi
+#
 #	Selects the XML parsing library to use when interpreting responses with
 #	Edge Side Includes.
 #

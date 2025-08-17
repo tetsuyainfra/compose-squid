@@ -8,25 +8,16 @@ networks:
 services:
   squid:
     environment:
+      CACHE_DIR: ${CACHE_DIR:-ufs /var/cache/squid 10000 16 256}
+      CACHE_MEM: ${CACHE_MEM:-256 MB}
+      MAXIMUM_OBJECT_SIZE: ${MAXIMUM_OBJECT_SIZE:-512 MB}
       TZ: ${TZ:-UTC}
-    image: ubuntu/squid:6.6-24.04_beta
+    image: compose-squid:latest
     networks:
       svc_net:
         ipv4_address: '#{SQUID_IP_ADDRESS}'
-    restart: ${RESTART:-no}
+    restart: ${RESTART:-unless-stopped}
     volumes:
-      - bind:
-          create_host_path: true
-        read_only: true
-        source: ./squid/entrypoint.sh
-        target: /usr/local/bin/entrypoint.sh
-        type: bind
-      - bind:
-          create_host_path: true
-        read_only: true
-        source: ./squid
-        target: /etc/squid
-        type: bind
       - source: squid_spool
         target: /var/spool/squid
         type: volume

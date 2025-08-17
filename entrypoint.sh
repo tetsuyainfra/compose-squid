@@ -16,10 +16,18 @@
 # [1] The default configuration is changed in the Dockerfile to allow local
 # network connections. See the Dockerfile for further information.
 
+set -ex
+
 # re-create snakeoil self-signed certificate removed in the build process
 if [ ! -f /etc/ssl/private/ssl-cert-snakeoil.key ]; then
     /usr/sbin/make-ssl-cert generate-default-snakeoil --force-overwrite > /dev/null 2>&1
 fi
+
+SQUID_CONF="/etc/squid/squid.conf"
+sed -i -e "s|cache_dir .*|cache_dir ${CACHE_DIR}|" ${SQUID_CONF}
+sed -i -e "s/maximum_object_size .*/maximum_object_size ${MAXIMUM_OBJECT_SIZE}/" ${SQUID_CONF}
+sed -i -e "s/cache_mem .*/cache_mem ${CACHE_MEM}/" ${SQUID_CONF}
+sed -i -e "s/max_filedescriptors .*/max_filedescriptors ${MAX_FILEDESCRIPTORS}/" ${SQUID_CONF}
 
 # Change cache,log directory ownership and permissions
 chown proxy:proxy /var/cache/squid

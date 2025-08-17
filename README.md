@@ -35,12 +35,15 @@ $ docker compose -f compose-ipvlan.yml up
 export $(cat .env | xargs) && ./test.sh
 ```
 
-
 ## common .env variable
-| VAR     | default | memo                                                                        |
-| ------- | ------- | --------------------------------------------------------------------------- |
-| TZ      | UTC     | TIME_ZONE                                                                   |
-| RESTART | no      | see  https://github.com/compose-spec/compose-spec/blob/main/spec.md#restart |
+| VAR                 | default                          | memo                                                                   |
+| ------------------- | -------------------------------- | ---------------------------------------------------------------------- |
+| TZ                  | UTC                              | TIME_ZONE                                                              |
+| RESTART             | no                               | https://github.com/compose-spec/compose-spec/blob/main/spec.md#restart |
+| CACHE_DIR           | ufs /var/cache/squid 1000 16 256 | https://www.squid-cache.org/Doc/config/cache_dir/                      |
+| MAXIMUM_OBJECT_SIZE | 256 MB                           | https://www.squid-cache.org/Doc/config/maximum_object_size/            |
+| CACHE_MEM           | 256 MB                           | https://www.squid-cache.org/Doc/config/cache_mem/                      |
+| MAX_FILEDESCRIPTORS | 1024                             | https://www.squid-cache.org/Doc/config/max_filedescriptors/            |
 
 ### A. On localhost variable
 | VAR | default | memo |
@@ -50,5 +53,10 @@ export $(cat .env | xargs) && ./test.sh
 ### B. On ipvlan network
 | VAR                   | default | memo                     |
 | --------------------- | ------- | ------------------------ |
-| EXTERNAL_NETWORK_NAME |         | ex: user defined_netwrok |
+| EXTERNAL_NETWORK_NAME |         | ex: user defined_network |
 | SQUID_IP_ADDRESS      |         | ex: 192.168.100.2        |
+
+
+
+# NOTICE
+- Dockerfile, entrypoint.sh from [ubuntu/squid](https://code.launchpad.net/~ubuntu-docker-images/ubuntu-docker-images/+git/squid)

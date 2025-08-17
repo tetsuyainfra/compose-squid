@@ -2,14 +2,14 @@
 
 services:
   squid:
-    image: ubuntu/squid:6.6-24.04_beta
-    # restart: unless-stopped
-    restart: ${RESTART:-no}
+    image: compose-squid:latest
+    restart: ${RESTART:-unless-stopped}
     environment:
       TZ: ${TZ:-UTC}
+      CACHE_DIR: ${CACHE_DIR:-ufs /var/cache/squid 10000 16 256}
+      MAXIMUM_OBJECT_SIZE: ${MAXIMUM_OBJECT_SIZE:-512 MB}
+      CACHE_MEM: ${CACHE_MEM:-256 MB}
     volumes:
-      - ./squid/entrypoint.sh:/usr/local/bin/entrypoint.sh:ro
-      - ./squid:/etc/squid:ro
       - squid_spool:/var/spool/squid
       - squid_cache:/var/cache/squid
 
