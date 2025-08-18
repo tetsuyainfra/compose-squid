@@ -8,7 +8,7 @@ COMPOSE_OPTIONS := --no-interpolate --no-path-resolution --no-normalize --no-env
 
 ALL := build compose.yml compose-ipvlan.yml
 
-.PHONY: all clean
+.PHONY: all clean build
 
 all: $(ALL)
 

@@ -12,7 +12,7 @@ services:
       CACHE_MEM: ${CACHE_MEM:-256 MB}
       MAXIMUM_OBJECT_SIZE: ${MAXIMUM_OBJECT_SIZE:-512 MB}
       TZ: ${TZ:-UTC}
-    image: compose-squid:latest
+    image: ${SQUID_IMAGE:-tetsuyainfra/compose-squid:latest}
     networks:
       svc_net:
         ipv4_address: '#{SQUID_IP_ADDRESS}'

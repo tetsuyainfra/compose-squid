@@ -8,12 +8,16 @@ services:
       CACHE_MEM: ${CACHE_MEM:-256 MB}
       MAXIMUM_OBJECT_SIZE: ${MAXIMUM_OBJECT_SIZE:-512 MB}
       TZ: ${TZ:-UTC}
-    image: compose-squid:latest
+    image: ${SQUID_IMAGE:-tetsuyainfra/compose-squid:latest}
     ports:
       - mode: ingress
         protocol: tcp
         published: "3128"
         target: 3128
+      - mode: ingress
+        protocol: tcp
+        published: "3142"
+        target: 3142
     restart: ${RESTART:-unless-stopped}
     volumes:
       - source: squid_spool

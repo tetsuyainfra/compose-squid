@@ -3,4 +3,5 @@ services:
   squid:
     ports:
      - "3128:3128"
+     - "3142:3142"
 

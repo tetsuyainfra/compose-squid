@@ -2,7 +2,7 @@
 
 services:
   squid:
-    image: compose-squid:latest
+    image: ${SQUID_IMAGE:-tetsuyainfra/compose-squid:latest}
     restart: ${RESTART:-unless-stopped}
     environment:
       TZ: ${TZ:-UTC}
