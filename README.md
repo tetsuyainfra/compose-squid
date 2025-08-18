@@ -1,4 +1,6 @@
-
+# compose-squid
+[![Docker](https://github.com/tetsuyainfra/compose-squid/actions/workflows/docker-publish.yml/badge.svg?branch=main)](https://github.com/tetsuyainfra/compose-squid/actions/workflows/docker-publish.yml)
+[![Docker Image Version](https://img.shields.io/docker/v/tetsuyainfra/compose-squid)](https://hub.docker.com/r/tetsuyainfra/compose-squid)
 
 ## HOW TO MERGE for each compose file
 ```
