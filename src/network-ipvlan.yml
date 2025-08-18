@@ -3,7 +3,7 @@ services:
   squid:
     networks:
       svc_net:
-        ipv4_address: "#{SQUID_IP_ADDRESS}"
+        ipv4_address: "${SQUID_IP_ADDRESS}"
 
 networks:
   svc_net:
