@@ -13,6 +13,17 @@ services:
       - squid_spool:/var/spool/squid
       - squid_cache:/var/cache/squid
 
+  registry:
+    image: registry:2
+    restart: ${RESTART:-unless-stopped}
+    volumes:
+      - registry_data:/var/lib/registry
+    environment:
+      REGISTRY_PROXY_REMOTEURL: "${REGISTRY_PROXY_REMOTEURL:-https://registry-1.docker.io}"
+      REGISTRY_PROXY_USERNAME: ${REGISTRY_PROXY_USERNAME}
+      REGISTRY_PROXY_PASSWORD: ${REGISTRY_PROXY_PASSWORD}
+
 volumes:
   squid_spool:
   squid_cache:
+  registry_data:

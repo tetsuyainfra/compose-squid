@@ -24,6 +24,7 @@ $ docker network create --driver ipvlan -o parent=eth1 --gateway 192.168.100.1 -
 $ vi .env
 EXTERNAL_NETWORK_NAME=user_defined_net
 SQUID_IP_ADDRESS=192.168.100.2
+REGISTRY_IP_ADDRESS=192.168.100.3
 
 $ docker compose -f compose-ipvlan.yml up 
 ```
@@ -37,7 +38,7 @@ $ docker compose -f compose-ipvlan.yml up
 export $(cat .env | xargs) && ./test.sh
 ```
 
-## common .env variable
+## Squid envrionment
 | VAR                 | default                           | memo                                                                   |
 | ------------------- | --------------------------------- | ---------------------------------------------------------------------- |
 | SQUID_IMAGE         | tetsuyainfra/compose-squid:latest | docker image name with tag                                             |
@@ -60,6 +61,23 @@ export $(cat .env | xargs) && ./test.sh
 | SQUID_IP_ADDRESS      |         | ex: 192.168.100.2        |
 
 
+## docker-registry mirror envrionment
+| VAR                      | default                      | memo     |
+| ------------------------ | ---------------------------- | -------- |
+| REGISTRY_PROXY_REMOTEURL | https://registry-1.docker.io |          |
+| REGISTRY_PROXY_USERNAME  |                              | required |
+| REGISTRY_PROXY_PASSWORD  |                              | required |
+
+### A. On localhost variable
+| VAR | default | memo |
+| --- | ------- | ---- |
+| -   | -       | -    |
+
+### B. On ipvlan network
+| VAR                   | default | memo                     |
+| --------------------- | ------- | ------------------------ |
+| EXTERNAL_NETWORK_NAME |         | ex: user defined_network |
+| REGISTRY_IP_ADDRESS   |         | ex: 192.168.100.3        |
 
 # NOTICE
 - Dockerfile, entrypoint.sh from [ubuntu/squid](https://code.launchpad.net/~ubuntu-docker-images/ubuntu-docker-images/+git/squid)

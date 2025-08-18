@@ -4,6 +4,10 @@ services:
     networks:
       svc_net:
         ipv4_address: "${SQUID_IP_ADDRESS}"
+  registry:
+    networks:
+      svc_net:
+        ipv4_address: "${REGISTRY_IP_ADDRESS}"
 
 networks:
   svc_net:

@@ -6,6 +6,21 @@ networks:
     external: true
     name: ${EXTERNAL_NETWORK_NAME}
 services:
+  registry:
+    environment:
+      REGISTRY_PROXY_PASSWORD: ${REGISTRY_PROXY_PASSWORD}
+      REGISTRY_PROXY_REMOTEURL: ${REGISTRY_PROXY_REMOTEURL:-https://registry-1.docker.io}
+      REGISTRY_PROXY_USERNAME: ${REGISTRY_PROXY_USERNAME}
+    image: registry:2
+    networks:
+      svc_net:
+        ipv4_address: ${REGISTRY_IP_ADDRESS}
+    restart: ${RESTART:-unless-stopped}
+    volumes:
+      - source: registry_data
+        target: /var/lib/registry
+        type: volume
+        volume: {}
   squid:
     environment:
       CACHE_DIR: ${CACHE_DIR:-ufs /var/cache/squid 10000 16 256}
@@ -27,5 +42,6 @@ services:
         type: volume
         volume: {}
 volumes:
+  registry_data: null
   squid_cache: null
   squid_spool: null
